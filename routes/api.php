@@ -24,6 +24,8 @@ Route::middleware('auth:api')->group(function ()
 
     Route::post('completed-task', 'ApiController@completedTask');
     Route::post('undo-completed-task', 'ApiController@undoCompletedTask');
+
+    Route::post('list', 'ApiController@list');
 });
 
 

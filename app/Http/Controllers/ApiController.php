@@ -25,7 +25,7 @@ class ApiController extends Controller
         }
         else
         {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
     }
@@ -80,6 +80,17 @@ class ApiController extends Controller
 
     }
 
+    public function list()
+    {
+        $user = Auth::user();
+        $userTaskList = TaskList::query()
+            ->where('task_user', $user->name)
+            ->get();
+
+        return response()->json(['message' => 'Liste Başarılı', 'data' => $userTaskList], 200);
+
+    }
+
     public function deleteTask(Request $request)
     {
         $id = $request->id;
@@ -120,7 +131,7 @@ class ApiController extends Controller
 
         if (gettype($completedTaskList) == 'array')
         {
-            $list= TaskList::where('task_user', $user->name)->whereIn('id', $completedTaskList)->update([
+            $list = TaskList::where('task_user', $user->name)->whereIn('id', $completedTaskList)->update([
                 'task_status' => 1
             ]);
             $userTaskList = TaskList::query()
